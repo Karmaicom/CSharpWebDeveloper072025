@@ -45,7 +45,7 @@ namespace Aula02_ControleDeFuncionarios
                                   $"\nNome: {inserirFuncionarioResponse.Funcionario.Nome}, " +
                                   $"\nCpf: {inserirFuncionarioResponse.Funcionario.Cpf}, " +
                                   $"\nMatricula: {inserirFuncionarioResponse.Funcionario.Matricula}, " +
-                                  $"\nData de Admissão: {inserirFuncionarioResponse.Funcionario.DataAdmissao}, " +
+                                  $"\nData de Admissão: {inserirFuncionarioResponse.Funcionario.DataAdmissao.ToString("dd/MM/yyyy")}, " +
                                   $"\nEmpresa: {inserirFuncionarioResponse.Funcionario.Empresa.RazaoSocial}\n");
             }
             else
@@ -64,9 +64,9 @@ namespace Aula02_ControleDeFuncionarios
                     var empresa = obterEmpresasResponse.Empresas.FirstOrDefault(e => e.Id == funcionario.EmpresaId);
 
                     Console.WriteLine($"ID: {funcionario.Id}, " +
-                                      $"Nome: {funcionario.Nome}, \nCpf: {funcionario.Cpf}, " +
-                                      $"\nMatricula: {funcionario.Matricula}, \nData de Admissão: {funcionario.DataAdmissao}, " +
-                                      $"\nEmpresa: {empresa.RazaoSocial}");
+                                      $"\nNome: {funcionario.Nome}, \nCpf: {funcionario.Cpf}, " +
+                                      $"\nMatricula: {funcionario.Matricula}, \nData de Admissão: {funcionario.DataAdmissao.ToString("dd/MM/yyyy")}, " +
+                                      $"\nEmpresa: {empresa.RazaoSocial}\n");
                 }
             }
             else

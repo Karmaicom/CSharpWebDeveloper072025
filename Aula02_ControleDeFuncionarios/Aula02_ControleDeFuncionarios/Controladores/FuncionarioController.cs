@@ -26,7 +26,7 @@ namespace Aula02_ControleDeFuncionarios.Controladores
                     {
                         Funcionarios = funcionarios,
                         StatusCode = System.Net.HttpStatusCode.OK,
-                        Mensagem = "Empresas obtidas com sucesso."
+                        Mensagem = "Funcionários obtidos com sucesso."
                     };
                 }
                 else
