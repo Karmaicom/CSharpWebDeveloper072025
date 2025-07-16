@@ -37,4 +37,5 @@ namespace Aula02_ControleDeFuncionarios.Controladores
                 };
             }
         }
+    }
 }
