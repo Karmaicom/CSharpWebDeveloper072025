@@ -25,6 +25,8 @@ namespace Aula02_ControleDeFuncionarios
             */
 
             var funcionarioController = new Controladores.FuncionarioController();
+
+            /*
             var funcionario = new Entidades.Funcionario
             {
                 Nome = "João da Silva",
@@ -40,15 +42,36 @@ namespace Aula02_ControleDeFuncionarios
             {
                 Console.WriteLine($"Mensagem: {inserirFuncionarioResponse.Mensagem}\n");
                 Console.WriteLine($"ID: {inserirFuncionarioResponse.Funcionario.Id}, " +
-                                  $"Nome: {inserirFuncionarioResponse.Funcionario.Nome}, " +
-                                  $"Cpf: {inserirFuncionarioResponse.Funcionario.Cpf}, " +
-                                  $"Matricula: {inserirFuncionarioResponse.Funcionario.Matricula}, " +
-                                  $"Data de Admissão: {inserirFuncionarioResponse.Funcionario.DataAdmissao}, " +
-                                  $"Empresa: {inserirFuncionarioResponse.Funcionario.Empresa.RazaoSocial}\n");
+                                  $"\nNome: {inserirFuncionarioResponse.Funcionario.Nome}, " +
+                                  $"\nCpf: {inserirFuncionarioResponse.Funcionario.Cpf}, " +
+                                  $"\nMatricula: {inserirFuncionarioResponse.Funcionario.Matricula}, " +
+                                  $"\nData de Admissão: {inserirFuncionarioResponse.Funcionario.DataAdmissao}, " +
+                                  $"\nEmpresa: {inserirFuncionarioResponse.Funcionario.Empresa.RazaoSocial}\n");
             }
             else
             {
                 Console.WriteLine(inserirFuncionarioResponse.Mensagem);
+            }
+            */
+
+            var funcionariosResponse = funcionarioController.ObterFuncionarios();
+
+            if (funcionariosResponse.StatusCode.Equals(HttpStatusCode.OK))
+            {
+                Console.WriteLine($"Mensagem: {funcionariosResponse.Mensagem}\n");
+                foreach (var funcionario in funcionariosResponse.Funcionarios)
+                {
+                    var empresa = obterEmpresasResponse.Empresas.FirstOrDefault(e => e.Id == funcionario.EmpresaId);
+
+                    Console.WriteLine($"ID: {funcionario.Id}, " +
+                                      $"Nome: {funcionario.Nome}, \nCpf: {funcionario.Cpf}, " +
+                                      $"\nMatricula: {funcionario.Matricula}, \nData de Admissão: {funcionario.DataAdmissao}, " +
+                                      $"\nEmpresa: {empresa.RazaoSocial}");
+                }
+            }
+            else
+            {
+                Console.WriteLine(funcionariosResponse.Mensagem);
             }
         }
     }

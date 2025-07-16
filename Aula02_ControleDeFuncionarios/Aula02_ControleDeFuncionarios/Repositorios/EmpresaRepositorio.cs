@@ -23,9 +23,7 @@ namespace Aula02_ControleDeFuncionarios.Repositorios
             using (var connection = new SqlConnection(_connectionString))
             {
                 return connection.Query<Empresa>(query).ToList();
-            }
-
-            
+            }            
         }
 
     }
