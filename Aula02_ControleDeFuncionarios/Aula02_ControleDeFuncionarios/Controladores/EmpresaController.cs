@@ -15,25 +15,37 @@ namespace Aula02_ControleDeFuncionarios.Controladores
 
         public ObterEmpresasResponse ObterEmpresas()
         {
-            var empresas = _repositorio.ObterEmpresas();
-
-            // Construindo objeto ObterEmpresaResponse
-            if (empresas.Any())
+            try
             {
-                return new ObterEmpresasResponse
+                var empresas = _repositorio.ObterEmpresas();
+
+                // Construindo objeto ObterEmpresaResponse
+                if (empresas.Any())
                 {
-                    Empresas = empresas,
-                    StatusCode = System.Net.HttpStatusCode.OK,
-                    Mensagem = "Empresas obtidas com sucesso."
-                };
+                    return new ObterEmpresasResponse
+                    {
+                        Empresas = empresas,
+                        StatusCode = System.Net.HttpStatusCode.OK,
+                        Mensagem = "Empresas obtidas com sucesso."
+                    };
+                }
+                else
+                {
+                    return new ObterEmpresasResponse
+                    {
+                        Empresas = new List<Empresa>(),
+                        StatusCode = System.Net.HttpStatusCode.NotFound,
+                        Mensagem = "Nenhuma empresa encontrada."
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
                 return new ObterEmpresasResponse
                 {
                     Empresas = new List<Empresa>(),
-                    StatusCode = System.Net.HttpStatusCode.NotFound,
-                    Mensagem = "Nenhuma empresa encontrada."
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                    Mensagem = $"Ocorreu um erro ao obter as empresas: {ex.Message}"
                 };
             }
         }

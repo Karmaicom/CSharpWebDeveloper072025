@@ -1,5 +1,4 @@
 ﻿using Aula02_ControleDeFuncionarios.Entidades;
-using Aula02_ControleDeFuncionarios.Repositorios.Responses;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -11,7 +10,7 @@ namespace Aula02_ControleDeFuncionarios.Repositorios
 
         public EmpresaRepositorio()
         {
-            _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=DBFuncionarios;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"; // Defina sua string de conexão aqui
+            _connectionString = new Configuracoes.ConfiguracaoDB().ConnectioString;
         }
 
         public List<Empresa> ObterEmpresas()
