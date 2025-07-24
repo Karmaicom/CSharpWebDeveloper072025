@@ -5,7 +5,6 @@ namespace CrudSqlServerDapper.Validators
 {
     public class ClientValidator : AbstractValidator<Client>
     {
-
         public ClientValidator()
         {
             // Validação do campo Nome

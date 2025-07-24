@@ -37,5 +37,20 @@ namespace CrudSqlServerDapper.Repostiories
                 connection.Execute(query, connection);
             }
         }
+
+        /// <summary>
+        /// Método para retornar uma lista com todos os clientes
+        /// que estão cadastrados no banco de dados sqlserver
+        /// </summary>
+        /// <returns></returns>
+        public List<Client> GetAll()
+        {
+            var query = @"select id, name, email, birthdate from client order by name";
+
+            using (var connection = new SqlConnection(_appSettings.ConnectionString))
+            {
+                return connection.Query<Client>(query).ToList();
+            }
+        }
     }
 }

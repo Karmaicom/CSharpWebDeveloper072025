@@ -35,6 +35,10 @@ namespace CrudSqlServerDapper.Controllers
                     CreateClient();
                     break;
 
+                case "4":
+                    ReadClients();
+                    break;
+
                 default:
                     Console.WriteLine("OPÇÃO INVÁLIDA!");
                     break;
@@ -104,5 +108,19 @@ namespace CrudSqlServerDapper.Controllers
             }
         }
 
+        public void ReadClients()
+        {
+            var repo = new ClientRepository();
+            var clients = repo.GetAll();
+
+            Console.WriteLine("\nLISTA DE CLIENTES\n");
+            foreach (var client in clients)
+            {
+                Console.WriteLine($"Id............: {client.Id} " +
+                                  $"\nName..........: {client.Name} " +
+                                  $"\nEmail.........: {client.Email} " +
+                                  $"\nBirthdate.....: {client.BirthDate.ToString("dd/MM/yyyy")} \n");
+            }
+        }
     }
 }
