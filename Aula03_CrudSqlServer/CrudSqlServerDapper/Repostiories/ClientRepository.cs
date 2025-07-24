@@ -52,5 +52,48 @@ namespace CrudSqlServerDapper.Repostiories
                 return connection.Query<Client>(query).ToList();
             }
         }
+
+        /// <summary>
+        /// Método para atualizar os dados de um cliente
+        /// </summary>
+        /// <param name="client"></param>
+        public void Update(Client client)
+        {
+            var query = @"update client set name = @Name, email = @Email, birthdate = @Birthdate
+                            where id = @Id";
+
+            using (var connection = new SqlConnection(_appSettings.ConnectionString))
+            {
+                connection.Execute(query, client);
+            }
+        }
+
+
+        /// <summary>
+        /// Método para excluir um cliente do banco de dados sqlserver
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(Guid id)
+        {
+            var query = @"delete from client where id = @Id";
+            using (var connection = new SqlConnection(_appSettings.ConnectionString))
+            {
+                connection.Execute(query, new { Id = id });
+            }
+        }
+
+        /// <summary>
+        /// Método para buscar um cliente pelo id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Client GetById(Guid id)
+        {
+            var query = @"select id, name, email, birthdate from client where id = @Id";
+            using (var connection = new SqlConnection(_appSettings.ConnectionString))
+            {
+                return connection.QueryFirstOrDefault<Client>(query, new { Id = id });
+            }
+        }
     }
 }

@@ -35,6 +35,14 @@ namespace CrudSqlServerDapper.Controllers
                     CreateClient();
                     break;
 
+                case "2":
+                    UpdateClient();
+                    break;
+
+                case "3":
+                    DeleteClient();
+                    break;
+
                 case "4":
                     ReadClients();
                     break;
@@ -62,64 +70,145 @@ namespace CrudSqlServerDapper.Controllers
 
         public void CreateClient()
         {
-            Console.WriteLine("\nCadastro de Cliente:\n");
-
-            var client = new Client();
-            client.Id = Guid.NewGuid(); //gerando um novo id para o cliente
-
-            Console.Write("Informe o nome..........................:");
-            client.Name = Console.ReadLine() ?? string.Empty;
-
-            Console.Write("Informe o e-mail........................:");
-            client.Email = Console.ReadLine() ?? string.Empty;
-
-            Console.Write("Informe a data de nascimento............:");
-            if (Console.ReadLine().Equals(null) || Console.ReadLine().Equals(""))
+            try
             {
-                Console.Write("Data de nascimento inválida. Usando a data atual.");
-                client.BirthDate = DateTime.Now;
-            }
-            else
-            {
-                client.BirthDate = DateTime.Parse(Console.ReadLine());
-            }
+                Console.WriteLine("\nCadastro de Cliente:\n");
 
-            //Instanciando a classe de validação do cliente
-            var validator = new ClientValidator();
-            //Executar as validações no objeto e capturar o resultado
-            var result = validator.Validate(client);
+                var client = new Client();
+                client.Id = Guid.NewGuid(); //gerando um novo id para o cliente
 
-            //Verificar os dados do cliente passaram nas regras de validação
-            if (result.IsValid)
-            {
-                //Criando um objeto da classe de repositório
-                var clientRepository = new ClientRepository();
-                clientRepository.Insert(client); //gravando o cliente
+                Console.Write("Informe o nome..........................:");
+                client.Name = Console.ReadLine() ?? string.Empty;
 
-                Console.WriteLine("\nCLIENTE CADASTRADO COM SUCESSO!");
-            }
-            else
-            {
-                Console.WriteLine("\nOCORRERAM ERROS DE VALIDAÇÃO!");
-                foreach (var error in result.Errors)
+                Console.Write("Informe o e-mail........................:");
+                client.Email = Console.ReadLine() ?? string.Empty;
+
+                Console.Write("Informe a data de nascimento............:");
+                if (Console.ReadLine().Equals(null) || Console.ReadLine().Equals(""))
                 {
-                    Console.WriteLine($"Erro: {error.ErrorMessage}");
+                    Console.Write("Data de nascimento inválida. Usando a data atual.");
+                    client.BirthDate = DateTime.Now;
                 }
+                else
+                {
+                    client.BirthDate = DateTime.Parse(Console.ReadLine());
+                }
+
+                //Instanciando a classe de validação do cliente
+                var validator = new ClientValidator();
+                //Executar as validações no objeto e capturar o resultado
+                var result = validator.Validate(client);
+
+                //Verificar os dados do cliente passaram nas regras de validação
+                if (result.IsValid)
+                {
+                    //Criando um objeto da classe de repositório
+                    var clientRepository = new ClientRepository();
+                    clientRepository.Insert(client); //gravando o cliente
+
+                    Console.WriteLine("\nCLIENTE CADASTRADO COM SUCESSO!");
+                }
+                else
+                {
+                    Console.WriteLine("\nOCORRERAM ERROS DE VALIDAÇÃO!");
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($"Erro: {error.ErrorMessage}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
         public void ReadClients()
         {
-            var repo = new ClientRepository();
-            var clients = repo.GetAll();
-
-            Console.WriteLine("\nLISTA DE CLIENTES\n");
-            foreach (var client in clients)
+            try
             {
-                Console.WriteLine($"Id............: {client.Id} " +
-                                  $"\nName..........: {client.Name} " +
-                                  $"\nEmail.........: {client.Email} " +
-                                  $"\nBirthdate.....: {client.BirthDate.ToString("dd/MM/yyyy")} \n");
+                var repo = new ClientRepository();
+                var clients = repo.GetAll();
+
+                Console.WriteLine("\nLISTA DE CLIENTES\n");
+                foreach (var client in clients)
+                {
+                    Console.WriteLine($"Id............: {client.Id} " +
+                                      $"\nName..........: {client.Name} " +
+                                      $"\nEmail.........: {client.Email} " +
+                                      $"\nBirthdate.....: {client.BirthDate.ToString("dd/MM/yyyy")} \n");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void UpdateClient()
+        {
+            try
+            {
+                var client = new Client();
+
+                Console.Write("Informe o Id..........................: ");                
+                if (Console.ReadLine().Equals(null) || Console.ReadLine().Equals(""))
+                {
+                    throw new Exception();
+                } else
+                {
+                    client.Id = Guid.Parse(Console.ReadLine() ?? string.Empty);
+                }
+
+                    Console.Write("Informe o nome..........................: ");
+                client.Name = Console.ReadLine() ?? string.Empty;
+
+                Console.Write("Informe o e-mail........................: ");
+                client.Email = Console.ReadLine() ?? string.Empty;
+
+                Console.Write("Informe a data de nascimento............: ");
+                if (Console.ReadLine().Equals(null) || Console.ReadLine().Equals(""))
+                {
+                    Console.Write("Data de nascimento inválida. Usando a data atual.");
+                    client.BirthDate = DateTime.Now;
+                }
+                else
+                {
+                    client.BirthDate = DateTime.Parse(Console.ReadLine());
+                }
+
+                var repo = new ClientRepository();
+                repo.Update(client);
+
+                Console.WriteLine("Cliente atualizado com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void DeleteClient()
+        {
+            try
+            {
+                Console.Write("Informe o ID do cliente a ser excluído: ");
+                var id = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    Console.WriteLine("ID inválido.");
+                    return;
+                }
+
+                var repo = new ClientRepository();
+                repo.Delete(Guid.Parse(id));
+
+                Console.WriteLine("Cliente excluído com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
     }
