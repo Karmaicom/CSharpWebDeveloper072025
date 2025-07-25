@@ -25,6 +25,7 @@ namespace CrudSqlServerDapper.Controllers
             Console.WriteLine("(2) ATUALIZAR CLIENTE");
             Console.WriteLine("(3) EXCLUIR CLIENTE");
             Console.WriteLine("(4) PESQUISAR CLIENTES");
+            Console.WriteLine("(5) PESQUISAR CLIENTE POR ID");
 
             Console.Write("\nINFORME A OPÇÃO DESEJADA...: ");
             var opcao = Console.ReadLine();
@@ -45,6 +46,10 @@ namespace CrudSqlServerDapper.Controllers
 
                 case "4":
                     ReadClients();
+                    break;
+
+                case "5":
+                    ReadClientById();
                     break;
 
                 default:
@@ -76,14 +81,15 @@ namespace CrudSqlServerDapper.Controllers
 
                 var client = new Client();
                 client.Id = Guid.NewGuid(); //gerando um novo id para o cliente
+                Console.Write($"Id gerado..............................: {client.Id}\n");
 
-                Console.Write("Informe o nome..........................:");
+                Console.Write("Informe o nome..........................: ");
                 client.Name = Console.ReadLine() ?? string.Empty;
 
-                Console.Write("Informe o e-mail........................:");
+                Console.Write("Informe o e-mail........................: ");
                 client.Email = Console.ReadLine() ?? string.Empty;
 
-                Console.Write("Informe a data de nascimento............:");
+                Console.Write("Informe a data de nascimento............: ");
                 if (Console.ReadLine().Equals(null) || Console.ReadLine().Equals(""))
                 {
                     Console.Write("Data de nascimento inválida. Usando a data atual.");
@@ -96,6 +102,7 @@ namespace CrudSqlServerDapper.Controllers
 
                 //Instanciando a classe de validação do cliente
                 var validator = new ClientValidator();
+
                 //Executar as validações no objeto e capturar o resultado
                 var result = validator.Validate(client);
 
@@ -151,16 +158,10 @@ namespace CrudSqlServerDapper.Controllers
             {
                 var client = new Client();
 
-                Console.Write("Informe o Id..........................: ");                
-                if (Console.ReadLine().Equals(null) || Console.ReadLine().Equals(""))
-                {
-                    throw new Exception();
-                } else
-                {
-                    client.Id = Guid.Parse(Console.ReadLine() ?? string.Empty);
-                }
-
-                    Console.Write("Informe o nome..........................: ");
+                Console.Write("Informe o Id..........................: ");
+                client.Id = Guid.Parse(Console.ReadLine() ?? string.Empty);
+                
+                Console.Write("Informe o nome..........................: ");
                 client.Name = Console.ReadLine() ?? string.Empty;
 
                 Console.Write("Informe o e-mail........................: ");
@@ -169,7 +170,7 @@ namespace CrudSqlServerDapper.Controllers
                 Console.Write("Informe a data de nascimento............: ");
                 if (Console.ReadLine().Equals(null) || Console.ReadLine().Equals(""))
                 {
-                    Console.Write("Data de nascimento inválida. Usando a data atual.");
+                    Console.Write("Data de nascimento inválida. Usando a data atual. ");
                     client.BirthDate = DateTime.Now;
                 }
                 else
@@ -205,6 +206,40 @@ namespace CrudSqlServerDapper.Controllers
                 repo.Delete(Guid.Parse(id));
 
                 Console.WriteLine("Cliente excluído com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void ReadClientById()
+        {
+            try
+            {
+                Console.Write("Informe o ID do cliente a ser encontrado: ");
+                var id = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    Console.WriteLine("ID inválido.");
+                    return;
+                }
+
+                var repo = new ClientRepository();
+                var client = repo.GetById(Guid.Parse(id));
+
+                if (client == null)
+                {
+                    Console.WriteLine("Cliente não encontrado.");
+                    return;
+                }
+
+                Console.WriteLine("\nDados do cliente\n");
+                Console.WriteLine($"Id............: {client.Id} " +
+                                      $"\nName..........: {client.Name} " +
+                                      $"\nEmail.........: {client.Email} " +
+                                      $"\nBirthdate.....: {client.BirthDate.ToString("dd/MM/yyyy")} \n");
             }
             catch (Exception ex)
             {

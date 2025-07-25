@@ -29,12 +29,12 @@ namespace CrudSqlServerDapper.Repostiories
         /// <param name="client"></param>
         public void Insert(Client client)
         {
-            var query = @"insert into client(id, name, email, birthdate)
-                           values(@Id, @Name, @Email, @Birthdate)";
+            //Escrevendo o comando SQL
+            var query = @"insert into client(id, name, email, birthdate) values(@Id, @Name, @Email, @Birthdate)";
 
             using (var connection = new SqlConnection(_appSettings.ConnectionString))
             {
-                connection.Execute(query, connection);
+                connection.Execute(query, client);
             }
         }
 
@@ -87,7 +87,7 @@ namespace CrudSqlServerDapper.Repostiories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Client GetById(Guid id)
+        public Client? GetById(Guid id)
         {
             var query = @"select id, name, email, birthdate from client where id = @Id";
             using (var connection = new SqlConnection(_appSettings.ConnectionString))
