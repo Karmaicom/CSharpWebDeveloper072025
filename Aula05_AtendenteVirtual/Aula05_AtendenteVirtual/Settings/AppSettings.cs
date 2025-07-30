@@ -18,7 +18,7 @@ public class AppSettings
         get
         {
             // Coloque aqui sua chave de API da OpenAI
-            return "key gerada no dashboard da openai"; 
+            return "code gerada no dashboard da openai"; 
         }
     }
 }
