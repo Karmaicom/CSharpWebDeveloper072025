@@ -4,7 +4,9 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        var atendimentoController = new Controllers.AtendimentoController();
+
+        atendimentoController.RealizarAtendimento();
     }
 }
 
