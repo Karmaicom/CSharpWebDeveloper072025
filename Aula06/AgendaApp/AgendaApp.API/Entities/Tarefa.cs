@@ -11,6 +11,6 @@ namespace AgendaApp.API.Entities
         public Prioridade Prioridade { get; set; }
         public Guid CategoriaId { get; set; }
 
-        public Categoria Categoria { get; set; }
+        public Categoria Categoria { get; set; } = new();
     }
 }
