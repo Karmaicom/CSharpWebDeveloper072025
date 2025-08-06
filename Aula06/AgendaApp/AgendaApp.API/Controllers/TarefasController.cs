@@ -28,6 +28,8 @@ namespace AgendaApp.API.Controllers
                 CategoriaId = requestDto.CategoriaId.Value
             };
 
+            tarefaRepository.Inserir(tarefa);
+
             return StatusCode(StatusCodes.Status201Created, new { tarefa.Id, requestDto });
 
         }
