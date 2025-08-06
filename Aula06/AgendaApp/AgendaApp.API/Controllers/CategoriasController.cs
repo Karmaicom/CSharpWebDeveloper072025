@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AgendaApp.API.Dtos;
+using AgendaApp.API.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaApp.API.Controllers
@@ -7,9 +9,17 @@ namespace AgendaApp.API.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-
         [HttpGet]
-        public IActionResult Post()
+        public IActionResult GetAll()
+        {
+            var categoriaRepository = new CategoriaRepository();
+            var categorias = categoriaRepository.ObterTodos();
+
+            return Ok(categorias);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] TarefaRequestDto requestDto)
         {
             return Ok();
         }
@@ -22,12 +32,6 @@ namespace AgendaApp.API.Controllers
 
         [HttpDelete]
         public IActionResult Delete()
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        public IActionResult Get()
         {
             return Ok();
         }

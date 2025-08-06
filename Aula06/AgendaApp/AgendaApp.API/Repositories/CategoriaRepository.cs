@@ -23,5 +23,24 @@ namespace AgendaApp.API.Repositories
                         .ToList();
             }
         }
+
+        /// <summary>
+        /// Verifica se uma categoria existe no banco de dados
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CategoriaExiste(Guid id)
+        {
+            using (var context = new DataContext())
+            {
+                /*
+                 * SELECT * FROM CATEGORIA 
+                 * WHERE ID = @id
+                 */
+                return context
+                        .Set<Categoria>()
+                        .Any(c => c.Id == id);
+            }
+        }
     }
 }
